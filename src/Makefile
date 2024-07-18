@@ -15,7 +15,7 @@ uninstall:
 	rm -f ../artifact/brickGame
 
 snake.a:
-	$(CC) $(CC_FLAGS) -c brickGame/snake/*/*.cc
+	$(CC) $(CC_FLAGS) -c brick_game/snake/*/*.cc
 	ar rc snake.a *.o
 	ranlib snake.a
 	rm -f *.o
