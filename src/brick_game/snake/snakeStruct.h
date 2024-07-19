@@ -1,10 +1,13 @@
 #ifndef SNAKE_STRUCT_H
-#define SNAKE_STRICT_H
+#define SNAKE_STRUCT_H
 
 #define SNAKE_FIELD_WIDTH 20
 #define SNAKE_FIELD_HEIGHT 10
 #define SNAKE_INIT_SIZE 4
-#define DEFAULT_SPEED 100
+#define DEFAULT_SPEED 200
+#define STEP_SPEED 20
+
+namespace s21 {
 
 typedef enum {
   Start,
@@ -17,14 +20,10 @@ typedef enum {
   Action
 } UserAction_t;
 
-typedef enum {
-  SNAKE,
-  FOOD
-} field_points;
+typedef enum { ZERO, SNAKE, FOOD } field_points;
 
 typedef enum {
   GAME_OVER = -1,
-  START_SCREEN = -2
 } gameStatus;
 
 typedef struct {
@@ -36,5 +35,7 @@ typedef struct {
   int speed;
   int pause;
 } GameInfo_t;
+
+}  // namespace s21
 
 #endif

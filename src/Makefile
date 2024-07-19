@@ -43,4 +43,5 @@ clean:
 clang:
 	cp ../materials/linters/.clang-format .
 	find . -type f -name "*.cc" -exec clang-format -i {} +
+	find . -type f -name "*.h" -exec clang-format -i {} +
 	rm -f .clang-format

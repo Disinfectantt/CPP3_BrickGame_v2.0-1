@@ -131,3 +131,6 @@ Makefile.old
 dkms.conf
 
 .vscode
+build/
+artifact/*
+!artifact/.gitkeep

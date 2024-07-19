@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+
+#include "snakeWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,5 +21,10 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow *ui;
+  SnakeWidget *snakeWidget;
+  QTimer *gameTimer;
+
+ private:
+  void updateField();
 };
 #endif  // MAINWINDOW_H

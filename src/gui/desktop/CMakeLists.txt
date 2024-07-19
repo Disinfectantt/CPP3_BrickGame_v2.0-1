@@ -12,11 +12,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+set(SNAKE_LIBRARY "../../brick_game/snake/")
+
+include_directories(.)
+
 set(PROJECT_SOURCES
         main.cc
         mainwindow.cc
         mainwindow.h
         mainwindow.ui
+        snakeWidget.cc
+        snakeWidget.h
+        ${SNAKE_LIBRARY}/controller/snakeController.h
+        ${SNAKE_LIBRARY}/controller/snakeController.cc
+        ${SNAKE_LIBRARY}/model/snake.cc
+        ${SNAKE_LIBRARY}/snake.h
+        ${SNAKE_LIBRARY}/snakeStruct.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

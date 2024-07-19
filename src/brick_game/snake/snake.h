@@ -2,8 +2,8 @@
 #define S21_SNAKE_H
 
 #include <iostream>
-#include <chrono>
 #include <random>
+
 #include "snakeStruct.h"
 
 namespace s21 {
