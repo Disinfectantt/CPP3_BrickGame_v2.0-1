@@ -9,7 +9,7 @@ snake::snake(GameInfo_t* GameInfo_t) : gameInfo(GameInfo_t) {
   }
   snake_tail_x = new int[SNAKE_FIELD_WIDTH * SNAKE_FIELD_HEIGHT];
   snake_tail_y = new int[SNAKE_FIELD_WIDTH * SNAKE_FIELD_HEIGHT];
-  gameInfo->high_score = 0;
+  gameInfo->high_score = readMaxScore();
   std::random_device rd;
   engine = std::mt19937(rd());
   gameInfo->level = 1;
@@ -17,6 +17,7 @@ snake::snake(GameInfo_t* GameInfo_t) : gameInfo(GameInfo_t) {
 }
 
 snake::~snake() {
+  writeMaxScore(gameInfo->high_score);
   for (int i = 0; i < SNAKE_FIELD_HEIGHT; ++i) {
     delete[] gameInfo->field[i];
   }
@@ -59,7 +60,7 @@ void snake::initStruct() {
 }
 
 GameInfo_t snake::updateCurrentState() {
-  if (gameInfo->pause == 0 && gameInfo->level != GAME_OVER) {
+  if (gameInfo->pause == 0 && gameInfo->level > 0) {
     updateSnakePos();
     checkCollision();
     generateField();
@@ -81,6 +82,13 @@ void snake::checkCollision() {
     if (gameInfo->high_score < gameInfo->score) ++gameInfo->high_score;
     ++snake_size;
     randFruit();
+    if (gameInfo->level < 10 && gameInfo->score % 5 == 0) {
+      gameInfo->speed -= STEP_SPEED;
+      ++gameInfo->level;
+    }
+  }
+  if (snake_size == SNAKE_FIELD_HEIGHT * SNAKE_FIELD_WIDTH) {
+    gameInfo->level = VICTORY;
   }
 }
 
@@ -151,6 +159,7 @@ void snake::userInput(UserAction_t action, bool hold) {
   } else if (action == Pause) {
     switchPause();
   } else if (action == Terminate) {
+    writeMaxScore(gameInfo->high_score);
     exit(0);
   } else if (action == Left && current_direction != Right) {
     current_direction = Left;
@@ -160,18 +169,44 @@ void snake::userInput(UserAction_t action, bool hold) {
     current_direction = Up;
   } else if (action == Down && current_direction != Up) {
     current_direction = Down;
-  } else if (action == Action && hold) {
-    // TODO gameInfo->speed +=
+  } else if (action == Action) {
+    if (hold) {
+      gameInfo->speed -= BOOST_SPEED;
+    } else {
+      gameInfo->speed += BOOST_SPEED;
+    }
   }
 }
 
 void snake::switchPause() {
-  if (gameInfo->level != GAME_OVER) {
+  if (gameInfo->level > 0) {
     if (gameInfo->pause == 1) {
       gameInfo->pause = 0;
     } else {
       gameInfo->pause = 1;
     }
+  }
+}
+
+int snake::readMaxScore() {
+  std::string filename = "snake_max_score.txt";
+  std::ifstream inFile(filename);
+  int number = 0;
+  if (inFile.is_open()) {
+    inFile >> number;
+    inFile.close();
+  }
+  return number;
+}
+
+void snake::writeMaxScore(int maxScore) {
+  std::string filename = "snake_max_score.txt";
+  std::ofstream outFile(filename);
+  if (outFile.is_open()) {
+    outFile << maxScore;
+    outFile.close();
+  } else {
+    std::cerr << "Can't create file\n";
   }
 }
 

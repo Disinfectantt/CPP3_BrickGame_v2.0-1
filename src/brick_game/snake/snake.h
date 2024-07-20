@@ -1,8 +1,10 @@
 #ifndef S21_SNAKE_H
 #define S21_SNAKE_H
 
+#include <fstream>
 #include <iostream>
 #include <random>
+#include <string>
 
 #include "snakeStruct.h"
 
@@ -30,6 +32,8 @@ class snake {
   void generateField();
   bool addSnakeToField(int i, int j);
   void switchPause();
+  int readMaxScore();
+  void writeMaxScore(int maxScore);
 
  public:
   snake(GameInfo_t *GameInfo_t);

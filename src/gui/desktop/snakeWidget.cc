@@ -5,10 +5,15 @@
 
 SnakeWidget::SnakeWidget(QWidget *parent) : QWidget(parent) {
   setFocusPolicy(Qt::StrongFocus);
+  oldSpeed = 0;
 }
 
 void SnakeWidget::setField() {
   GameInfo = controller.getAndUpdateGameInfo();
+  if (GameInfo.speed != oldSpeed) {
+    changeSpeed(GameInfo.speed);
+    oldSpeed = GameInfo.speed;
+  }
   update();
 }
 
@@ -33,11 +38,15 @@ void SnakeWidget::paintEvent(QPaintEvent *event) {
   if (GameInfo.level == s21::GAME_OVER) {
     drawTextCenter(Qt::red, event, &painter, "GAME OVER\nPRESS CTRL");
   }
+  if (GameInfo.level == s21::VICTORY) {
+    drawTextCenter(Qt::green, event, &painter, "YOU WON\nPRESS CTRL");
+  }
 }
 
 void SnakeWidget::keyPressEvent(QKeyEvent *event) {
   int key = event->key();
   s21::UserAction_t action = s21::Action;
+  bool hold = false;
   if (key == Qt::Key_Control) {
     action = s21::Start;
   }
@@ -61,9 +70,16 @@ void SnakeWidget::keyPressEvent(QKeyEvent *event) {
   }
   if (key == Qt::Key_Space) {
     action = s21::Action;
+    hold = true;
   }
-  // TODO hold
-  controller.userInput(action, false);
+  controller.userInput(action, hold);
+}
+
+void SnakeWidget::keyReleaseEvent(QKeyEvent *event) {
+  int key = event->key();
+  if (key == Qt::Key_Space) {
+    controller.userInput(s21::Action, false);
+  }
 }
 
 s21::GameInfo_t *SnakeWidget::getGameInfo() { return &GameInfo; }
@@ -80,4 +96,9 @@ void SnakeWidget::drawTextCenter(QColor color, QPaintEvent *event,
   painter->setPen(color);
   painter->setRenderHint(QPainter::TextAntialiasing);
   painter->drawText(textRect, Qt::AlignCenter, text);
+}
+
+void SnakeWidget::changeSpeed(int newSpeed) {
+  GameInfo.speed = newSpeed;
+  emit speedChanged(newSpeed);
 }

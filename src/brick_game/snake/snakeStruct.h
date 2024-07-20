@@ -5,7 +5,8 @@
 #define SNAKE_FIELD_HEIGHT 10
 #define SNAKE_INIT_SIZE 4
 #define DEFAULT_SPEED 200
-#define STEP_SPEED 20
+#define STEP_SPEED 25
+#define BOOST_SPEED 100
 
 namespace s21 {
 
@@ -22,9 +23,7 @@ typedef enum {
 
 typedef enum { ZERO, SNAKE, FOOD } field_points;
 
-typedef enum {
-  GAME_OVER = -1,
-} gameStatus;
+typedef enum { GAME_OVER = -1, VICTORY = -2 } gameStatus;
 
 typedef struct {
   int **field;

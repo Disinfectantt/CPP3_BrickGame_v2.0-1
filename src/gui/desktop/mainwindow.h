@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QLabel>
 #include <QMainWindow>
 #include <QTimer>
 
@@ -23,8 +24,16 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow *ui;
   SnakeWidget *snakeWidget;
   QTimer *gameTimer;
+  QLabel *snakeScore;
+  QLabel *snakeMaxScore;
+  QLabel *snakeLevel;
+  QLabel *tetrisScore;
+  QLabel *tetrisMaxScore;
+  QLabel *tetrisLevel;
 
  private:
   void updateField();
+  void updateLabels();
+  void handleSpeedChange(int newSpeed);
 };
 #endif  // MAINWINDOW_H
