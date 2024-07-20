@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
   snakeLevel = ui->snake_level;
   snakeScore = ui->snake_score;
   snakeMaxScore = ui->snake_max_score;
-  tetrisLevel = ui->tetris_level;
-  tetrisScore = ui->tetris_score;
-  tetrisMaxScore = ui->tetris_max_score;
 
   connect(gameTimer, &QTimer::timeout, this, &MainWindow::updateLabels);
   connect(gameTimer, &QTimer::timeout, this, &MainWindow::updateField);

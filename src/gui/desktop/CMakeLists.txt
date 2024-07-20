@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(brickGame VERSION 0.1 LANGUAGES CXX)
+project(brickGame VERSION 0.1 LANGUAGES CXX C)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,6 +13,14 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(SNAKE_LIBRARY "../../brick_game/snake/")
+set(TETRIS_LIBRARY "../../brick_game/tetris/")
+
+set_source_files_properties(
+    ${TETRIS_LIBRARY}/backend.c
+    ${TETRIS_LIBRARY}/fsm.c
+    ${TETRIS_LIBRARY}/tetris.c
+    PROPERTIES LANGUAGE C
+)
 
 include_directories(.)
 
@@ -23,11 +31,20 @@ set(PROJECT_SOURCES
         mainwindow.ui
         snakeWidget.cc
         snakeWidget.h
+        tetrisWidget.h
+        tetrisWidget.cc
         ${SNAKE_LIBRARY}/controller/snakeController.h
         ${SNAKE_LIBRARY}/controller/snakeController.cc
         ${SNAKE_LIBRARY}/model/snake.cc
         ${SNAKE_LIBRARY}/snake.h
         ${SNAKE_LIBRARY}/snakeStruct.h
+        ${TETRIS_LIBRARY}/backend.c
+        ${TETRIS_LIBRARY}/backend.h
+        ${TETRIS_LIBRARY}/fsm.c
+        ${TETRIS_LIBRARY}/fsm.h
+        ${TETRIS_LIBRARY}/objects.h
+        ${TETRIS_LIBRARY}/tetris.c
+        ${TETRIS_LIBRARY}/tetris.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

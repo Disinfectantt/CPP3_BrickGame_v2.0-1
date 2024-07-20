@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include "snakeWidget.h"
+#include "tetrisWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,9 +28,6 @@ class MainWindow : public QMainWindow {
   QLabel *snakeScore;
   QLabel *snakeMaxScore;
   QLabel *snakeLevel;
-  QLabel *tetrisScore;
-  QLabel *tetrisMaxScore;
-  QLabel *tetrisLevel;
 
  private:
   void updateField();

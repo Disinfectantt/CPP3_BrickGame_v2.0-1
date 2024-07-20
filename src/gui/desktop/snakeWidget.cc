@@ -23,6 +23,7 @@ void SnakeWidget::paintEvent(QPaintEvent *event) {
   int cellHeight = height() / SNAKE_FIELD_HEIGHT;
   for (int y = 0; y < SNAKE_FIELD_HEIGHT; ++y) {
     for (int x = 0; x < SNAKE_FIELD_WIDTH; ++x) {
+      painter.setPen(QPen(Qt::darkGray, 1));
       QRect cellRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
       if (GameInfo.field[y][x] == s21::SNAKE) {
         painter.fillRect(cellRect, Qt::gray);
