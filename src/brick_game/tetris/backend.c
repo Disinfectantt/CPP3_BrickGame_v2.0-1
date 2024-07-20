@@ -12,10 +12,10 @@ void infoInit(GameInfo_t *gameInfo) {
   gameInfo->next = (int **)malloc(sizeof(int *) * 4);
 
   for (int i = 0; i < 10; i++) {
-    gameInfo->field[i] = (int *)calloc(sizeof(int), 20);
+    gameInfo->field[i] = (int *)calloc(20, sizeof(int));
   }
   for (int i = 0; i < 4; i++) {
-    gameInfo->next[i] = (int *)calloc(sizeof(int), 4);
+    gameInfo->next[i] = (int *)calloc(20, sizeof(int));
   }
   FILE *highScore;
   highScore = fopen("./highscore_tetris.txt", "r");

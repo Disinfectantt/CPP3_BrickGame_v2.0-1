@@ -493,22 +493,6 @@ bool *get_fallTime(bool *fallTime) {
   return FallTime;
 }
 
-void userInput(UserAction_t action, bool hold) {
-  GameInfo_t *gameInfo = get_gameInfo(NULL);
-  tetris_state *state = get_state(NULL);
-  Tetramino *current = get_current(NULL);
-  block *nextBlock = get_nextBlock(NULL);
-  bool *fallTime = get_fallTime(NULL);
-  if (hold) {
-    // sigact(&action, fallTime, state, gameInfo, current, nextBlock);
-  }
-
-  get_gameInfo(gameInfo);
-  get_state(state);
-  get_current(current);
-  get_nextBlock(nextBlock);
-}
-
 void sigact(UserAction_t *sig, const bool *fallTime, tetris_state *state,
             GameInfo_t *gameInfo, Tetramino *current) {
   if (*fallTime && *state != START && *state != GAMEOVER && *state != SPAWN &&
@@ -549,4 +533,52 @@ void sigact(UserAction_t *sig, const bool *fallTime, tetris_state *state,
     default:
       break;
   }
+}
+
+tetris_state mainGameLogic(GameInfo_t *gameInfo, UserAction_t sig) {
+  static tetris_state state;
+  static Tetramino current;
+  static block nextBlock;
+  static bool fallTime;
+  static clock_t clock1;
+
+  if (gameInfo == NULL) {
+    fallTime = 0;
+    clock1 = clock();
+    nextBlock = rand() % 7;
+    state = SPAWN;
+    current.rotate_state = 0;
+    current.type = 0;
+    current.x1 = current.x2 = current.x3 = current.x4 = 0;
+    current.y1 = current.y2 = current.y3 = current.y4 = 0;
+
+    get_state(&state);
+    get_current(&current);
+    get_nextBlock(&nextBlock);
+    get_fallTime(&fallTime);
+  } else {
+    get_gameInfo(gameInfo);
+    clock_t clock2 = clock();
+    if (clock2 - clock1 >= 12000 - ((clock_t)gameInfo->speed * 150 + 10000)) {
+      clock1 = clock2;
+      fallTime = 1;
+      get_fallTime(&fallTime);
+    }
+    if (state == SPAWN) {
+      if (spawn_block(gameInfo, nextBlock, &current)) {
+        state = GAMEOVER;
+      } else {
+        nextBlock = rand() % 7;
+        next_update(gameInfo, nextBlock);
+        board_update(gameInfo, &current);
+        state = MOVING;
+        if (gameInfo->pause == 1) {
+          state = PAUSE;
+        }
+      }
+    }
+    sigact(&sig, &fallTime, &state, gameInfo, &current);
+    fallTime = 0;
+  }
+  return state;
 }

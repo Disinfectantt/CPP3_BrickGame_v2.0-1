@@ -31,7 +31,6 @@ bool *get_fallTime(bool *fallTime);
 tetris_state *get_state(tetris_state *state);
 Tetramino *get_current(Tetramino *current);
 block *get_nextBlock(block *nextBlock);
-void userInput(UserAction_t action, bool hold);
 void sigact(UserAction_t *sig, const bool *fallTime, tetris_state *state,
             GameInfo_t *gameInfo, Tetramino *current);
 
@@ -59,5 +58,6 @@ void rotate_T_second(Tetramino *current, GameInfo_t *gameInfo);
 void rotate_T(Tetramino *current, GameInfo_t *gameInfo);
 void rotate_Z(Tetramino *current, GameInfo_t *gameInfo);
 void clear_backpos(Tetramino *current, GameInfo_t *gameInfo);
+tetris_state mainGameLogic(GameInfo_t *gameInfo, UserAction_t sig);
 
 #endif  // TETRIS_FSM_H_
