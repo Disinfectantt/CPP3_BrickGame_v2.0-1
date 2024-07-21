@@ -11,7 +11,7 @@ CHECK=$(shell pkg-config --libs check)
 
 all: install cli gcov_report
 
-install:
+install: cli
 	cmake gui/desktop -B ../build
 	make -C ../build/
 	cp ../build/brickGame $(INSTALL_PATH)
