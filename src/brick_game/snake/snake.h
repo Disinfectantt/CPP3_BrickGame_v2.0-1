@@ -11,7 +11,7 @@
 namespace s21 {
 
 class snake {
- private:
+ protected:
   GameInfo_t *gameInfo;
   int *snake_tail_x;
   int *snake_tail_y;
@@ -23,7 +23,7 @@ class snake {
   UserAction_t current_direction;
   std::mt19937 engine;
 
- private:
+ protected:
   void startGame();
   void initStruct();
   void checkCollision();

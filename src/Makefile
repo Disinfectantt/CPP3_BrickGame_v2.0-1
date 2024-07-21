@@ -5,10 +5,11 @@ C_CC_FLAGS=-Wall -Werror -Wextra -std=c11
 TESTS_FOLDER=tests/
 INSTALL_PATH=../artifact/
 NCURSES_FLAGS := $(shell pkg-config --cflags --libs ncurses)
+COVERAGE_FLAGS=-fprofile-arcs -ftest-coverage
+LDFLAGS=$(shell pkg-config --libs gtest_main)
+CHECK=$(shell pkg-config --libs check)
 
-.PHONY: tests gcov_report valgrind clean clang install uninstall cli
-
-all: install gcov_report
+all: install cli gcov_report
 
 install:
 	cmake gui/desktop -B ../build
@@ -34,25 +35,37 @@ snake.a:
 	ranlib snake.a
 	rm -f *.o
 
-gcov_report: test
-	lcov -t "test" -o $(TESTS_FOLDER)test.info -c -d . --no-external
+gcov_report: tests
+	lcov -t "test" -o $(TESTS_FOLDER)test.info -c -d . --no-external --ignore-errors mismatch,mismatch
 	genhtml -o report $(TESTS_FOLDER)test.info
-	open report/index.html
+	xdg-open report/index.html
 
-tests: clean
-	$(CC) $(CC_FLAGS) $(CC_test) $(TESTS_FOLDER)*.cc *.cc -o test -lm $(LDFLAGS)
-	./test
+tests: clean tetris_test snake_test
+
+tetris_test:
+	$(C_COMPILER) $(C_CC_FLAGS) $(COVERAGE_FLAGS) tests/tetris/*.c brick_game/tetris/*.c -o tetris_test $(CHECK)
+	./tetris_test
 	mv *.gcda *.gcno $(TESTS_FOLDER)
 
-valgrind: clean
-	$(CC) -g $(CC_FLAGS) $(CC_test) $(TESTS_FOLDER)*.cc *.cc -o test -lm $(LDFLAGS)
-	valgrind --tool=memcheck --leak-check=yes ./test
+snake_test:
+	$(CC) $(CC_FLAGS) $(CC_test) $(COVERAGE_FLAGS) tests/snake/*.cc brick_game/snake/*/*.cc -o snake_test $(LDFLAGS)
+	./snake_test
+	mv *.gcda *.gcno $(TESTS_FOLDER)
+
+valgrind_tetris: tetris.a
+	$(C_COMPILER) $(C_CC_FLAGS) $(COVERAGE_FLAGS) tests/tetris/*.c tetris.a -o tetris_test $(CHECK)
+	valgrind --tool=memcheck --leak-check=yes ./tetris_test
+	mv *.gcda *.gcno $(TESTS_FOLDER)
+
+valgrind_snake: clean snake.a
+	$(CC) $(CC_FLAGS) $(CC_test) $(COVERAGE_FLAGS) tests/snake/*.cc snake.a -o snake_test $(LDFLAGS)
+	valgrind --tool=memcheck --leak-check=yes ./snake_test
 	mv *.gcda *.gcno $(TESTS_FOLDER)
 
 clean:
 	rm -f snake.a tetris.a test *.o
 	rm -f $(TESTS_FOLDER)*.gcda $(TESTS_FOLDER)*.gcno $(TESTS_FOLDER)test.info
-	rm -rf report
+	rm -rf report highscore_tetris.txt tetris_test snake_test snake_max_score.txt
 
 clang:
 	cp ../materials/linters/.clang-format .
@@ -60,3 +73,5 @@ clang:
 	find . -type f -name "*.h" -exec clang-format -i {} +
 	find . -type f -name "*.c" -exec clang-format -i {} +
 	rm -f .clang-format
+
+.PHONY: tests gcov_report valgrind clean clang install uninstall cli tetris_test snake_test valgrind_snake valgrind_tetris

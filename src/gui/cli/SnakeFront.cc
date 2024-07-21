@@ -91,7 +91,7 @@ void snakeFront::drawField() {
 
 void snakeFront::print_text(std::string text) {
   int y = SNAKE_FIELD_HEIGHT + 2;
-  int x = SNAKE_FIELD_WIDTH / 2;
+  int x = 1;
   mvprintw(y, x, "%s", text.c_str());
 }
 
