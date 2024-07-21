@@ -74,4 +74,10 @@ clang:
 	find . -type f -name "*.c" -exec clang-format -i {} +
 	rm -f .clang-format
 
-.PHONY: tests gcov_report valgrind clean clang install uninstall cli tetris_test snake_test valgrind_snake valgrind_tetris
+dvi:
+	xdg-open ../README.md
+
+dist: $(shell find . -name '*.c') $(shell find . -name '*.cc') $(shell find . -name '*.h') ./Makefile
+	tar -czf BrickGame_v2.0-1.tar.gz $^
+
+.PHONY: tests gcov_report valgrind clean clang install uninstall cli tetris_test snake_test valgrind_snake valgrind_tetris dvi dist

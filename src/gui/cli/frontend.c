@@ -62,9 +62,9 @@ void print_next_section(GameInfo_t *stats) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (stats->next[j][i] == 1) {
-        mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 1 + i * 2, "00");
+        mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 2 + i * 2, "0");
       } else {
-        mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 1 + i * 2, " ");
+        mvprintw(NEXT_TOP_Y + j, NEXT_LEFT_X + 2 + i * 2, " ");
       }
     }
   }

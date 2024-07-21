@@ -86,6 +86,8 @@ START_TEST(test_rotate_I) {
   movedown(&current, &gameInfo);
   rotate(&current, &gameInfo);
   ck_assert_int_eq(current.rotate_state, 1);
+  rotate(&current, &gameInfo);
+  ck_assert_int_eq(current.rotate_state, 0);
   infoFree(&gameInfo);
 }
 END_TEST

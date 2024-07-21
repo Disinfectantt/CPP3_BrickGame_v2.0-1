@@ -55,19 +55,6 @@ START_TEST(test_move_down) {
 }
 END_TEST
 
-START_TEST(test_rotate_I) {
-  GameInfo_t gameInfo;
-  infoInit(&gameInfo);
-  Tetramino current;
-  tetramino_init_I(&current);
-
-  rotate_I(&current, &gameInfo);
-  ck_assert_int_eq(current.rotate_state, 0);
-
-  infoFree(&gameInfo);
-}
-END_TEST
-
 START_TEST(test_check_full_line) {
   GameInfo_t gameInfo;
   infoInit(&gameInfo);
@@ -364,7 +351,6 @@ Suite *suite_tetris_base(void) {
   tcase_add_test(tc, test_info_init);
   tcase_add_test(tc, test_tetramino_I);
   tcase_add_test(tc, test_move_down);
-  tcase_add_test(tc, test_rotate_I);
   tcase_add_test(tc, test_check_full_line);
   tcase_add_test(tc, test_tetramino_init_J);
   tcase_add_test(tc, test_tetramino_init_L);
