@@ -42,6 +42,7 @@ void tetrisWidget::keyPressEvent(QKeyEvent *event) {
   }
   if (key == Qt::Key_Escape) {
     action = Terminate;
+    QCoreApplication::quit();
   }
   if (key == Qt::Key_Return || key == Qt::Key_Enter) {
     action = Action;
