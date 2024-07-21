@@ -1,9 +1,7 @@
 #include "s21_tetris_test.h"
 
 void run_tests(void) {
-  Suite *list_cases[] = {suite_tetris_base(), NULL
-
-  };
+  Suite *list_cases[] = {suite_tetris_base(), tetris_2(), NULL};
 
   for (Suite **current_testcase = list_cases; *current_testcase != NULL;
        current_testcase++) {

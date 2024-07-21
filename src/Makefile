@@ -53,12 +53,12 @@ snake_test:
 	mv *.gcda *.gcno $(TESTS_FOLDER)
 
 valgrind_tetris: tetris.a
-	$(C_COMPILER) $(C_CC_FLAGS) $(COVERAGE_FLAGS) tests/tetris/*.c tetris.a -o tetris_test $(CHECK)
+	$(C_COMPILER) $(C_CC_FLAGS) $(COVERAGE_FLAGS) -g tests/tetris/*.c tetris.a -o tetris_test $(CHECK)
 	valgrind --tool=memcheck --leak-check=yes ./tetris_test
 	mv *.gcda *.gcno $(TESTS_FOLDER)
 
 valgrind_snake: clean snake.a
-	$(CC) $(CC_FLAGS) $(CC_test) $(COVERAGE_FLAGS) tests/snake/*.cc snake.a -o snake_test $(LDFLAGS)
+	$(CC) $(CC_FLAGS) $(CC_test) $(COVERAGE_FLAGS) -g tests/snake/*.cc snake.a -o snake_test $(LDFLAGS)
 	valgrind --tool=memcheck --leak-check=yes ./snake_test
 	mv *.gcda *.gcno $(TESTS_FOLDER)
 

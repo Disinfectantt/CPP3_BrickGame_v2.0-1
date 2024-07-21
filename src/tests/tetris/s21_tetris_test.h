@@ -7,6 +7,7 @@
 #include "../../brick_game/tetris/tetris.h"
 
 Suite *suite_tetris_base(void);
+Suite *tetris_2(void);
 
 void run_tests(void);
 void run_testcase(Suite *testcase);
